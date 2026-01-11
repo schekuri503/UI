@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:oracle_poc;MODE=Oracle;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  sql:
+    init:
+      mode: always
+  h2:
+    console:
+      enabled: true
+
+app:
+  hibernate:
+    dialect: org.hibernate.dialect.H2Dialect
+    show-sql: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: oracle
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: ${ORACLE_JDBC_URL:jdbc:oracle:thin:@myadb_high?TNS_ADMIN=/path/to/wallet}
+    username: ${ORACLE_USERNAME:ADMIN}
+    password: ${ORACLE_PASSWORD:password}
+  sql:
+    init:
+      mode: never
+
+app:
+  hibernate:
+    dialect: org.hibernate.dialect.Oracle12cDialect
+    show-sql: false

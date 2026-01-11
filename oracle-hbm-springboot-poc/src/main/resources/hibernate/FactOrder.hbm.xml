@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.example.oraclehbmspringbootpoc.model">
+    <class name="FactOrder" table="FACT_ORDER">
+        <id name="orderId" column="ORDER_ID" type="long">
+            <generator class="assigned"/>
+        </id>
+        <property name="customerId" column="CUSTOMER_ID" type="long"/>
+        <property name="orderDate" column="ORDER_DATE" type="date"/>
+        <property name="status" column="STATUS" type="string"/>
+    </class>
+</hibernate-mapping>
