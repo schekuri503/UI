@@ -17,7 +17,7 @@ public class DimCustomerDao {
     @Transactional(readOnly = true)
     public List<DimCustomer> findTop(int limit) {
         return sessionFactory.getCurrentSession()
-                .createQuery("from DimCustomer", DimCustomer.class)
+                .createQuery("from DimCustomer order by customerId", DimCustomer.class)
                 .setMaxResults(limit)
                 .list();
     }

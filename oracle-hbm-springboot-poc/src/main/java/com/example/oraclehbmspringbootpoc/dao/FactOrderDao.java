@@ -17,7 +17,7 @@ public class FactOrderDao {
     @Transactional(readOnly = true)
     public List<FactOrder> findTop(int limit) {
         return sessionFactory.getCurrentSession()
-                .createQuery("from FactOrder", FactOrder.class)
+                .createQuery("from FactOrder order by orderId", FactOrder.class)
                 .setMaxResults(limit)
                 .list();
     }

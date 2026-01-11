@@ -17,7 +17,7 @@ public class DimProductDao {
     @Transactional(readOnly = true)
     public List<DimProduct> findTop(int limit) {
         return sessionFactory.getCurrentSession()
-                .createQuery("from DimProduct", DimProduct.class)
+                .createQuery("from DimProduct order by productId", DimProduct.class)
                 .setMaxResults(limit)
                 .list();
     }
