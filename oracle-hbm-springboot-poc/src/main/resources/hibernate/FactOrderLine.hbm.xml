@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.example.oraclehbmspringbootpoc.model">
+    <class name="FactOrderLine" table="FACT_ORDER_LINE">
+        <id name="orderLineId" column="ORDER_LINE_ID" type="long">
+            <generator class="assigned"/>
+        </id>
+        <property name="orderId" column="ORDER_ID" type="long"/>
+        <property name="productId" column="PRODUCT_ID" type="long"/>
+        <property name="quantity" column="QUANTITY" type="int"/>
+        <property name="unitPrice" column="UNIT_PRICE" type="big_decimal"/>
+    </class>
+</hibernate-mapping>
