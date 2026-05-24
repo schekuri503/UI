@@ -42,6 +42,15 @@ React + TypeScript + Vite + Supabase based private ledger/reminder app for BC we
 - Store OCR draft text in `customer notes` import review screen
 - Manual verification required before save
 
+
+## Google login setup
+1. In Supabase Dashboard -> Authentication -> Providers, enable **Google**.
+2. Add Google OAuth client ID/secret in Supabase.
+3. In Supabase URL Configuration, add redirect URLs:
+   - `http://localhost:5173/dashboard`
+   - `https://<your-vercel-domain>/dashboard`
+4. Use the Login page "Continue with Google" button.
+
 ## Deploy (Vercel)
 1. Push repo to GitHub
 2. Import to Vercel
