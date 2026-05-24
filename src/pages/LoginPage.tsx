@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { supabase } from '../lib/supabase'
+import { getSupabaseClient, isSupabaseConfigured } from '../lib/supabase'
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false)
@@ -8,6 +8,13 @@ export default function LoginPage() {
   const signInWithGoogle = async () => {
     setLoading(true)
     setError('')
+
+    const supabase = getSupabaseClient()
+    if (!supabase) {
+      setError('Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env and restart dev server.')
+      setLoading(false)
+      return
+    }
 
     const { error: authError } = await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -29,11 +36,16 @@ export default function LoginPage() {
       <button
         type='button'
         onClick={signInWithGoogle}
-        disabled={loading}
+        disabled={loading || !isSupabaseConfigured()}
         className='w-full rounded bg-blue-600 text-white py-2 font-medium disabled:opacity-60'
       >
         {loading ? 'Redirecting...' : 'Continue with Google'}
       </button>
+      {!isSupabaseConfigured() ? (
+        <p className='text-sm text-amber-700'>
+          Missing environment variables. Configure `.env` from `.env.example` and restart `npm run dev`.
+        </p>
+      ) : null}
       {error ? <p className='text-sm text-red-600'>{error}</p> : null}
       <p className='text-xs text-slate-500'>
         Setup note: In Supabase Auth, enable Google provider and add your site URLs to Redirect URLs.
