@@ -1,68 +1,56 @@
-# IPL Predictor
+# Vyapara Ledger (MVP)
 
-Production-style, mobile-first React + TypeScript + Vite app for a private friends IPL prediction league.
+React + TypeScript + Vite + Supabase based private ledger/reminder app for BC weekly and monthly interest accounts.
 
-## Included
-- Google Sign-In login flow abstraction (`authService`) ready to swap with Firebase Auth SDK.
-- Match dashboard and prediction page with lock-time enforcement.
-- Vote totals shown without revealing who picked what.
-- Leaderboard with top-3 party badges.
-- Admin tools: create/edit/delete matches, import schedule JSON, set result winner, leaderboard recompute.
-- My Stats page with league/playoff skip tracking.
-- Strict typed models + Firestore converter stubs.
-- Dark IPL-inspired UI and responsive cards.
+## Features in this scaffold
+- Supabase auth-ready login route
+- Customer and dues screens
+- Dashboard KPI cards
+- CSV report export
+- SQL migrations with RLS and owner-based isolation
+- BC installment generation function
+- English + Telugu labels starter
+- Mobile-first shell layout
 
-## Stack Notes
-This environment blocks new package installation. The app is built so it runs now, while all Firebase integration points are clearly isolated in:
-- `src/firebase/config.ts`
-- `src/firebase/converters.ts`
-- `src/services/authService.ts`
-- `src/services/dataService.ts`
+## Project structure
+- `src/components` layout and reusable UI blocks
+- `src/pages` route pages (`/dashboard`, `/customers`, `/dues`, `/reports`, `/login`)
+- `src/lib/supabase.ts` Supabase client
+- `src/lib/i18n.ts` INR formatter + English/Telugu labels
+- `supabase/migrations` SQL schema + policies
+- `supabase/seed` sample data
 
-To switch to live Firebase:
-1. Install SDK: `npm i firebase`.
-2. Replace mock auth service with `signInWithPopup(GoogleAuthProvider)`.
-3. Replace localStorage data calls with Firestore collections (`matches`, `predictions`, `leaderboards`).
-4. Keep lock validation in both UI and write methods.
+## Setup
+1. `npm install`
+2. Copy `.env.example` to `.env`
+3. Add Supabase URL and anon key
+4. Run SQL in `supabase/migrations/202605240001_init.sql`
+5. Optional seed using `supabase/seed/seed.sql`
+6. `npm run dev`
 
-## Run
-```bash
-npm install
-npm run dev
-```
+## Tailwind + shadcn/ui
+- Tailwind configured in `tailwind.config.ts` and `src/index.css`
+- Add shadcn/ui components with: `npx shadcn@latest init`
 
-## Build
-```bash
-npm run build
-```
+## Business logic notes
+- BC weekly: use `generate_bc_installments` DB function after account insert
+- Monthly interest due = `principal * apr / 12 / 100`
+- Payment updates should append to `payments`, then update `installments`, then `audit_logs`
 
-## Firebase Hosting Deployment
-```bash
-npm run build
-firebase login
-firebase init hosting
-firebase deploy --only hosting
-```
+## Telugu notes scan import (Phase 2)
+- Mobile camera capture + OCR pipeline (Tesseract.js or Google Vision API)
+- Store OCR draft text in `customer notes` import review screen
+- Manual verification required before save
 
-## Firestore Rules
-Sample rules are included in `firestore.rules`.
+## Deploy (Vercel)
+1. Push repo to GitHub
+2. Import to Vercel
+3. Framework: Vite
+4. Build command: `npm run build`
+5. Output dir: `dist`
+6. Add env vars from `.env.example`
 
-## JSON Import Format (Admin)
-Array of `Match` objects:
-```json
-[
-  {
-    "id": "m100",
-    "season": 2026,
-    "startsAtUtc": "2026-04-03T14:00:00.000Z",
-    "lockTimeUtc": "2026-04-03T13:50:00.000Z",
-    "venue": "M. Chinnaswamy Stadium",
-    "homeTeam": "RCB",
-    "awayTeam": "GT",
-    "stage": "LEAGUE",
-    "resultWinner": null,
-    "createdAtUtc": "2026-03-27T00:00:00.000Z",
-    "updatedAtUtc": "2026-03-27T00:00:00.000Z"
-  }
-]
-```
+## Free-tier guidance
+- Supabase free tier for DB/Auth
+- Vercel free tier for frontend hosting
+- Manual WhatsApp reminders via wa.me links keep cost at zero
