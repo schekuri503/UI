@@ -1,25 +1,9 @@
-import type { Match } from '../types'
-import { MatchCard } from '../components/MatchCard'
-import { canEditPrediction } from '../utils/scoring'
+import { formatINR } from '../lib/i18n'
 
-interface DashboardProps {
-  matches: Match[]
-  votes: Record<string, { homeTeamVotes: number; awayTeamVotes: number }>
-  myPicks: Record<string, string>
-}
+const cards = [
+  ['Due Today', 12000], ['Overdue', 35000], ['Paid Today', 8000], ['Active Accounts', 24],
+]
 
-export const DashboardPage = ({ matches, votes, myPicks }: DashboardProps) => {
-  return (
-    <section className="grid">
-      {matches.map((match) => (
-        <MatchCard
-          key={match.id}
-          match={match}
-          votes={votes[match.id] ?? { homeTeamVotes: 0, awayTeamVotes: 0 }}
-          selectedWinner={myPicks[match.id]}
-          isLocked={!canEditPrediction(match)}
-        />
-      ))}
-    </section>
-  )
+export default function DashboardPage() {
+  return <div><h2 className='text-2xl font-semibold mb-4'>Dashboard</h2><div className='grid grid-cols-2 md:grid-cols-4 gap-3'>{cards.map(([k,v]) => <div key={String(k)} className='bg-white p-4 rounded-lg shadow'><p className='text-sm'>{k}</p><p className='text-xl font-bold'>{typeof v==='number'&&k!=='Active Accounts'?formatINR(v):v}</p></div>)}</div></div>
 }

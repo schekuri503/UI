@@ -1,0 +1,1 @@
+export default function DuesPage(){return <div><h2 className='text-2xl font-semibold mb-4'>Installments / Dues</h2><p>Shows Due Today, Overdue and paid filters with WhatsApp reminder actions.</p></div>}

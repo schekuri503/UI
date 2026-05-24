@@ -1,0 +1,1 @@
+export default function CustomersPage(){return <div><h2 className='text-2xl font-semibold mb-4'>Customers</h2><p>Search, add, edit customers with phone and address fields.</p></div>}
